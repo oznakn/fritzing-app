@@ -1,5 +1,5 @@
 #!/bin/bash -e
-QTBIN=/usr/local/opt/qt5/bin
+QTBIN=/opt/homebrew/opt/qt@6/bin
 
 # Go to this scripts directory and then one up
 toolsdir=$(dirname "${BASH_SOURCE[0]}")
@@ -46,8 +46,6 @@ echo ">> add .app dependencies"
 cd "$deploydir"
 $QTBIN/macdeployqt Fritzing.app -verbose=2 -dmg
 
-echo ">> launch Fritzing"
-cd "$deploydir"
-open Fritzing.dmg
+echo "$deploydir"
 
 echo ">> done!"

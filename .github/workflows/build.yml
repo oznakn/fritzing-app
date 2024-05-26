@@ -1,0 +1,35 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: install Qt6 with Brew
+        run: |
+          brew install qt
+
+      - name: Build and Install LibGit2
+        run: |
+          cd ..
+          wget -q -O - https://github.com/libgit2/libgit2/archive/v1.7.1.tar.gz | tar xz
+          mkdir -p libgit2-1.7.1/lib
+          cd libgit2-1.7.1/lib && cmake -D BUILD_SHARED_LIBS=OFF .. && cmake --build .
+          echo "libgit2 is build"
+
+      - name: Get and Install Boost
+        run: |
+          cd ..
+          wget -q -O - https://archives.boost.io/release/1.70.0/source/boost_1_70_0.tar.gz | tar xz
+          echo "boost installed"
+
+      - name: Build Fritzing
+        run: |
+          BOOST_ROOT=/Users/runner/work/fritzing-app/boost_1_70_0 ./tools/deploy_fritzing_mac.sh
+          echo "done DEPLOY SCRIPT"
